@@ -1,0 +1,26 @@
+{
+  "name": "enforce-cli",
+  "version": "0.0.0",
+  "description": "",
+  "main": "cli.js",
+  "scripts": {
+    "test": "export DEBUG=* || SET DEBUG=enforce-cli,mock:xbee && node ./test/test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ITISEnricoFermi/enforce-cli.git"
+  },
+  "keywords": [
+    "cansat"
+  ],
+  "author": "Ernesto Montada Romero <e.montada0@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ITISEnricoFermi/enforce-cli/issues"
+  },
+  "homepage": "https://github.com/ITISEnricoFermi/enforce-cli#readme",
+  "dependencies": {
+    "debug": "^3.1.0",
+    "yargs": "^11.0.0"
+  }
+}
