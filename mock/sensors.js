@@ -72,7 +72,7 @@ class Sensors extends EventEmitter {
 			this.gps.StopLoop()
 	}
 
-	imiOn() {
+	imuOn() {
 		if (this.SENSORS.imu)
 			this.imu.startReading()
 	}
