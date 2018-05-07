@@ -3,6 +3,7 @@ const {
 } = require("events")
 
 const options = require("./commands")
+const mock = require("./mockobjs")
 
 const debug = require("debug")("enforce-cli")
 
@@ -23,65 +24,35 @@ class CLI extends EventEmitter {
 		cli = this
 
 		this.opts = Object.assign({}, opts)
-		if (!("sensors" in this.opts)) {
-			this.opts.sensors = {
-				gpsOff() {},
-				gpsOn() {},
-				thpOff() {},
-				thpOn() {},
-				imuOff() {},
-				imuOn() {},
-				status() {
-					return {}
-					/*{
-											gps: false,
-											imu: false,
-											thp: false
-										}*/
-				}
-			}
-		}
-		if (!("motors" in this.opts)) {
-			this.opts.motors = {
-				setRight(motorState) {},
-				setLeft(motorState) {},
-				getStatus() {
-					return {}
-					/*{
-											leftMotor: false,
-											rightMotor: false
-										}*/
-				}
-			}
-		}
-		if (!("pilot" in this.opts)) {
-			this.opts.pilot = {
-				disableAutopilot() {},
-				enableAutopilot() {},
-				status() {
-					return {}
-					/*{
-					pilot: false
-					}*/
-				}
-			}
-		}
-		if (!("camera" in this.opts)) {
-			this.opts.camera = {
-				kill() {},
-				start() {},
-				send(c) {},
-			}
-		}
+		
+		this._init()
 
-		this.comms.on("command", (c) => this._parseCommand(c))
+		this.comms.on("command", c => this._parseCommand(c))
 		// Setting up the aviable commands
 		this._COMMANDS = {
-			motor: _motors,
-			sensor: _sensors,
+			motors: _motors,
+			sensors: _sensors,
 			pilot: _pilot,
 			status: _status,
 			camera: _camera
+		}
+	}
+
+	_init() {
+		if (!("sensors" in this.opts)) {
+			this.opts.sensors = mock.sensors
+		}
+		if (!("motors" in this.opts)) {
+			this.opts.motors = mock.motors
+		}
+		if (!("pilot" in this.opts)) {
+			this.opts.pilot = mock.pilot
+		}
+		if (!("camera" in this.opts)) {
+			this.opts.camera = mock.camera
+		}
+		if (!("targeter" in this.opts)) {
+			this.opts.targeter = mock.targeter
 		}
 	}
 
@@ -126,7 +97,7 @@ function _sensors(opts) {
 		else s.gpsOff()
 	}
 	if (opts.t) {
-		if (opts.g !== "0") s.thpOn()
+		if (opts.t !== "0") s.thpOn()
 		else s.thpOff()
 	}
 }
@@ -149,8 +120,9 @@ function _status(opts) {
 module.exports = CLI
 
 /*
-	motors:
-	sensors:
-	camera:
-	pilot:
+	motors: motors [-lr [0-1]]
+	sensors: sensors [-igt [0-1]]
+	camera:	camera
+	pilot: pilot
+	status: 
 */
