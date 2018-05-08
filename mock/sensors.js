@@ -20,38 +20,50 @@ class Sensors extends EventEmitter {
 		this.SENSORS.thp = sensors.hasOwnProperty("thp")
 
 		if (this.SENSORS.imu) {
-			this.imu = sensors.imu
-			this.imu.on('quaternion', (data) => {
-				this.emit('quaternion', data)
-			})
-			this.imu.on('euler', (data) => {
-				this.emit('euler', data)
-			})
+			this._initImu(sensors)
 		}
 		if (this.SENSORS.gps) {
-			this.gps = sensors.gps
-			this.gps.on("data", d => {
-				this.emit("position", Object.assign({}, {
-					latitude: d.latitude,
-					longitude: d.longitude,
-					altitude: d.altitude
-				}))
-				this.emit("rawposition", d)
-			})
+			this._initGps(sensors)
 		}
 
 		if (this.SENSORS.thp) {
-			this.thp = sensors.thp
-			this.thp.on("data", d => {
-				this.emit("temperature", d.temperature_C)
-			})
-			this.thp.on("data", d => {
-				this.emit("humidity", d.humidity)
-			})
-			this.thp.on("data", d => {
-				this.emit("pressure", d.pressure_hPa)
-			})
+			this._initThp(sensors)
 		}
+	}
+
+	_initThp(sensors) {
+		this.thp = sensors.thp
+		this.thp.on("data", d => {
+			this.emit("temperature", d.temperature_C)
+		})
+		this.thp.on("data", d => {
+			this.emit("humidity", d.humidity)
+		})
+		this.thp.on("data", d => {
+			this.emit("pressure", d.pressure_hPa)
+		})
+	}
+
+	_initGps(sensors) {
+		this.gps = sensors.gps
+		this.gps.on("data", d => {
+			this.emit("position", Object.assign({}, {
+				latitude: d.latitude,
+				longitude: d.longitude,
+				altitude: d.altitude
+			}))
+			this.emit("rawposition", d)
+		})
+	}
+
+	_initImu(sensors) {
+		this.imu = sensors.imu
+		this.imu.on('quaternion', (data) => {
+			this.emit('quaternion', data)
+		})
+		this.imu.on('euler', (data) => {
+			this.emit('euler', data)
+		})
 	}
 
 	status() {
@@ -62,40 +74,46 @@ class Sensors extends EventEmitter {
 		}
 	}
 
-	gpsOn() {
-		if (this.SENSORS.gps)
-			this.gps.StopLoop()
+	setGps(state) {
+		if (this.SENSORS.gps) {
+			if (state === true) {
+				this.gps.StartLoop()
+			} else if (state === false) {
+				this.gps.StopLoop()
+			} else {
+				debug(state + " is not a valid state")
+			}
+		}
 	}
 
-	gpsOff() {
-		if (this.SENSORS.gps)
-			this.gps.StopLoop()
+	setImu(state) {
+		if (this.SENSORS.imu) {
+			if (state === true) {
+				this.imu.startReading()
+			} else if (state === false) {
+				this.imu.stopReading()
+			} else {
+				debug(state + " is not a valid state")
+			}
+		}
 	}
 
-	imuOn() {
-		if (this.SENSORS.imu)
-			this.imu.startReading()
-	}
-
-	imuOff() {
-		if (this.SENSORS.imu)
-			this.imu.stopReading()
-	}
-
-	thpOn() {
-		if (this.SENSORS.thp)
-			this.thp.startReading()
-	}
-
-	thpOff() {
-		if (this.SENSORS.thp)
-			this.thp.stopReading()
+	setThp(state) {
+		if (this.SENSORS.thp) {
+			if (state === true) {
+				this.thp.startReading()
+			} else if (state === false) {
+				this.thp.stopReading()
+			} else {
+				debug(state + " is not a valid state")
+			}
+		}
 	}
 
 	stopAll() {
-		this.thpOff()
-		this.imuOff()
-		this.gpsOff()
+		this.setThp(false)
+		this.setImu(false)
+		this.setGps(false)
 	}
 }
 
