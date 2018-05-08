@@ -89,27 +89,35 @@ function _sensors(opts) {
 	debug("Sensors command: %o", opts)
 	const s = cli.opts.sensors
 	if (opts.i) {
-		if (opts.i !== "0") s.imuOn()
-		else s.imuOff()
+		s.setImu(opts.t !== "0" ? true : false)
 	}
 	if (opts.g) {
-		if (opts.g !== "0") s.gpsOn()
-		else s.gpsOff()
+		s.setGps(opts.g !== "0" ? true : false)
 	}
 	if (opts.t) {
-		if (opts.t !== "0") s.thpOn()
-		else s.thpOff()
+		s.setThp(opts.t !== "0" ? true : false)
 	}
 }
 
 function _camera(opts) {
 	debug("Camera command: %o", opts)
+	if (opts.s) {
+		if (opts.s === "kill") {
+			cli.opts.camera.kill()
+		}
+		if (opts.s === "streamonly") {
+			cli.opts.camera.stop()
+		}
+		if (opts.s === "start") {
+			cli.opts.camera.start()
+		}
+	}
 
 }
 
 function _pilot(opts) {
 	debug("Pilot command: %o", opts)
-
+	
 }
 
 function _status(opts) {
@@ -124,5 +132,5 @@ module.exports = CLI
 	sensors: sensors [-igt [0-1]]
 	camera:	camera
 	pilot: pilot
-	status: 
+	status: status
 */
