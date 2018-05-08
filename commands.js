@@ -1,6 +1,13 @@
 const yargs = require("yargs")
 
 const args = yargs
+// all
+.options({
+	s: {
+		alias: "status",
+		string: true
+	}
+})
 // Motors
 .options({
 	l: {
@@ -27,7 +34,7 @@ const args = yargs
 		string: true
 	}
 })
-// TODO: Camera
+// Camera
 .options({
 	
 })
