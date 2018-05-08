@@ -3,6 +3,7 @@ module.exports = {
         kill() {},
         start() {},
         send(c) {},
+        stop() {}
     },
     pilot: {
         disableAutopilot() {},
