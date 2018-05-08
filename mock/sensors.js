@@ -1,6 +1,7 @@
 const {
 	EventEmitter
 } = require('events')
+const debug = require("debug")("enforce-cli:sensors")
 
 class Sensors extends EventEmitter {
 	/**
