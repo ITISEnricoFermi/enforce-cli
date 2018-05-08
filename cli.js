@@ -24,7 +24,7 @@ class CLI extends EventEmitter {
 		cli = this
 
 		this.opts = Object.assign({}, opts)
-		
+
 		this._init()
 
 		this.comms.on("command", c => this._parseCommand(c))
@@ -89,7 +89,7 @@ function _sensors(opts) {
 	debug("Sensors command: %o", opts)
 	const s = cli.opts.sensors
 	if (opts.i) {
-		s.setImu(opts.t !== "0" ? true : false)
+		s.setImu(opts.i !== "0" ? true : false)
 	}
 	if (opts.g) {
 		s.setGps(opts.g !== "0" ? true : false)
@@ -117,7 +117,7 @@ function _camera(opts) {
 
 function _pilot(opts) {
 	debug("Pilot command: %o", opts)
-	
+
 }
 
 function _status(opts) {

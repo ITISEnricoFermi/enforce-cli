@@ -4,7 +4,7 @@
   "description": "",
   "main": "cli.js",
   "scripts": {
-    "test": "export DEBUG=* || SET DEBUG=enforce-cli,mock:xbee && node ./test/test.js"
+    "test": "export DEBUG=* || SET DEBUG=enforce-cli,mock:imu,enforce-cli:sensors && node ./test/test.js"
   },
   "repository": {
     "type": "git",
