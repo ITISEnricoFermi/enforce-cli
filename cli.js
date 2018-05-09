@@ -7,7 +7,12 @@ const mock = require("./mockobjs")
 
 const debug = require("debug")("enforce-cli")
 
+/**
+ *@type CLI
+ */
 let cli = null
+
+let _COMMANDS = ["motors","sensors","pilot","status","camera"]
 
 class CLI extends EventEmitter {
 	/**
@@ -29,13 +34,7 @@ class CLI extends EventEmitter {
 
 		this.comms.on("command", c => this._parseCommand(c))
 		// Setting up the aviable commands
-		this._COMMANDS = {
-			motors: _motors,
-			sensors: _sensors,
-			pilot: _pilot,
-			status: _status,
-			camera: _camera
-		}
+		_initListeners()
 	}
 
 	_init() {
@@ -63,13 +62,21 @@ class CLI extends EventEmitter {
 		debug("Received command: " + command)
 		let comm = options.parse(command)
 		for (let i = 0; i < comm._.length; i++) {
-			if (comm._[i] in this._COMMANDS) {
-				this._COMMANDS[comm._[i]](comm)
+			if (_COMMANDS.indexOf(comm._[i]) !== -1) {
+				this.emit(comm._[i], comm)
 			} else {
 				debug("Command %s not found", comm._[i])
 			}
 		}
 	}
+}
+
+function _initListeners() {
+	cli.on("motors", _motors)
+	cli.on("sensors", _sensors)
+	cli.on("pilot", _pilot)
+	cli.on("status", _status)
+	cli.on("camera", _camera)
 }
 
 function _motors(opts) {
@@ -117,6 +124,11 @@ function _camera(opts) {
 
 function _pilot(opts) {
 	debug("Pilot command: %o", opts)
+
+}
+
+function _target(opts) {
+	debug("Target command: %o", opts)
 
 }
 
