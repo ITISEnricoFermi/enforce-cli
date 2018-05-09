@@ -37,6 +37,10 @@ class CLI extends EventEmitter {
 		_initListeners()
 	}
 
+	on(event, listener) {
+		super.on(event, listener.bind(this))
+	}
+
 	_init() {
 		if (!("sensors" in this.opts)) {
 			this.opts.sensors = mock.sensors
@@ -83,18 +87,18 @@ function _motors(opts) {
 	debug("Motors command: %o", opts)
 	if (opts.l) {
 		debug("Motor left: %s", opts.l)
-		cli.opts.motors.setLeft(opts.l !== "0" ? true : false)
+		this.opts.motors.setLeft(opts.l !== "0" ? true : false)
 	}
 	if (opts.r) {
 		debug("Motor right: %s", opts.r)
-		cli.opts.motors.setLeft(opts.r !== "0" ? true : false)
+		this.opts.motors.setLeft(opts.r !== "0" ? true : false)
 	}
 }
 
 
 function _sensors(opts) {
 	debug("Sensors command: %o", opts)
-	const s = cli.opts.sensors
+	const s = this.opts.sensors
 	if (opts.i) {
 		s.setImu(opts.i !== "0" ? true : false)
 	}
@@ -110,13 +114,13 @@ function _camera(opts) {
 	debug("Camera command: %o", opts)
 	if (opts.s) {
 		if (opts.s === "kill") {
-			cli.opts.camera.kill()
+			this.opts.camera.kill()
 		}
 		if (opts.s === "streamonly") {
-			cli.opts.camera.stop()
+			this.opts.camera.stop()
 		}
 		if (opts.s === "start") {
-			cli.opts.camera.start()
+			this.opts.camera.start()
 		}
 	}
 
@@ -134,7 +138,7 @@ function _target(opts) {
 
 function _status(opts) {
 	debug("Status command: %o", opts)
-	cli.comms.send("status", Object.assign({}, cli.opts.sensors.status(), cli.opts.motors.getStatus(), cli.opts.pilot.status()))
+	this.comms.send("status", Object.assign({}, this.opts.sensors.status(), this.opts.motors.getStatus(), this.opts.pilot.status()))
 }
 
 module.exports = CLI
