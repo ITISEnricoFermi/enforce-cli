@@ -30,10 +30,7 @@ function _sensors(opts) {
 function _camera(opts) {
 	debug("Camera command: %o", opts)
 	if (opts.s) {
-		if (opts.s === "kill") {
-			this.opts.camera.kill()
-		}
-		if (opts.s === "streamonly") {
+		if (opts.s === "stop") {
 			this.opts.camera.stop()
 		}
 		if (opts.s === "start") {
