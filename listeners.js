@@ -52,7 +52,9 @@ function _target(opts) {
 
 function _status(opts) {
 	debug("Status command: %o", opts)
-	this.comms.send("status", Object.assign({}, this.opts.sensors.status(), this.opts.motors.getStatus(), this.opts.pilot.status()))
+	this.comms.send("status", Object.assign({}, this.opts.sensors.status(), this.opts.motors.getStatus(), this.opts.pilot.status(), {
+		camera: this.opts.camera.isRunning()
+	}))
 }
 
 module.exports = {
