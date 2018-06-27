@@ -36,7 +36,7 @@ const args = yargs
 })
 // Camera
 .options({
-	
+
 })
 
 module.exports = args

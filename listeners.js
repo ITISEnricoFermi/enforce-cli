@@ -42,7 +42,14 @@ function _camera(opts) {
 
 function _pilot(opts) {
 	debug("Pilot command: %o", opts)
-
+	if (opts.s) {
+		if (opts.s === "start") {
+			this.opts.pilot.enableAutopilot()
+		}
+		if (opts.s === "stop") {
+			this.opts.pilot.disableAutopilot()
+		}
+	}
 }
 
 function _target(opts) {
