@@ -54,7 +54,12 @@ function _pilot(opts) {
 
 function _target(opts) {
 	debug("Target command: %o", opts)
-
+	if (opts.x && opts.y) {
+		this.opts.targeter.setTarget({
+			x: parseFloat(opts.x),
+			y: parseFloat(opts.y)
+		})
+	}
 }
 
 function _status(opts) {

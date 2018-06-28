@@ -85,6 +85,7 @@ function _initListeners() {
 	cli.on("pilot", listeners._pilot)
 	cli.on("status", listeners._status)
 	cli.on("camera", listeners._camera)
+	cli.on("target", listeners._target)
 }
 
 module.exports = CLI

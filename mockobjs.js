@@ -22,5 +22,7 @@ module.exports = {
 		imuOn() {},
 		status() {}
 	},
-	targeter: {}
+	targeter: {
+		setTarget() {}
+	}
 }

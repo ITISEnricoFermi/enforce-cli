@@ -34,9 +34,15 @@ const args = yargs
 		string: true
 	}
 })
-// Camera
 .options({
-
+	x: {
+		alias: "longitude",
+		string: true
+	},
+	y: {
+		alias: "latitude",
+		string: true
+	}
 })
 
 module.exports = args
