@@ -21,6 +21,6 @@
   "homepage": "https://github.com/ITISEnricoFermi/enforce-cli#readme",
   "dependencies": {
     "debug": "^4.1.1",
-    "yargs": "^13.2.4"
+    "yargs": "^15.3.1"
   }
 }
